@@ -40,7 +40,7 @@ Starting with this template, add program options in `add_arguments()`.
 
 The type of `parser` is assumed as `argparse.ArgumentParser` class.
 
-for details, your Python script must contain `add_arguments(parser)` and `main(args)`.
+For details, your Python script must contain `add_arguments(parser)` and `main(args)`.
 `logger` is optional. Also `logger` can be replaced its name as `_LOG` or `LOG`.
 For `logger`, it's OK to use any other 3rd-party logging modules like [`loguru`](https://github.com/Delgan/loguru).
 
@@ -54,10 +54,10 @@ wrapp YOURS.py --your-options ...
 ```
 
 That is, just replace `python` to `wrapp`.
-Then your script may keep simple:
+Then you can keep your script simple:
 
 - `if __name__ == '__main__':` is not needed.
-- Also you don't need any noisy modules such as `argparse`.
+- Also you don't need any noisy modules such as `argparse`, `from argparse import ...`, `from logging import ...`.
 
 
 ## FEATURES
@@ -73,4 +73,112 @@ MIT License.
 
 ## BACKGROUNDS
 
-TBD.
+As I wrote tons of Python CLI applications, I noticed that,
+
+- `argparse` is the best practice to add my program command options.
+- `logging` is not bad if I modify something (format, ...).
+- But I noticed that there are many similar lines in my applications. And they make my code look more dirty.
+
+Here is my application code pattern. Please note that there is nothing infomative.
+
+```
+#!/usr/bin/env python3
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from logging import getLogger
+from pathlib import Path
+import logging.config
+
+
+_LOG = getLogger(__name__)
+
+
+###############################################################################
+# public functions
+
+
+def add_arguments(parser):
+    parser.add_argument(
+            'in_file', type=Path,
+            help='An input file.')
+    parser.add_argument(
+            '--out-dir', '-d', type=Path, default=None,
+            help='A directory.')
+
+
+###############################################################################
+# private functions
+
+
+###############################################################################
+# Application
+
+
+def _main(args):
+    _LOG.debug('debug')
+    _LOG.info('info')
+    _LOG.warning('warning')
+    _LOG.error('error')
+    _LOG.critical('critical')
+    ...
+
+
+def _parse_args():
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-i', '--input-files', nargs='*', help='input files.')
+    args = parser.parse_args()
+    logging.config.fileConfig('logging.conf')
+    for k,v in vars(args).items():
+        _LOG.info('{}= {}'.format(k, v))
+    return args
+
+
+def _print_args(args):
+    for k, v in vars(args).items():
+        _LOG.info(f'{k}= {v}')
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    add_arguments(parser)
+    args = parser.parse_args()
+    logging.config.fileConfig('logging.conf')
+    _print_args(args)
+    _main(args)
+```
+
+So I decided to separate it to 2 files; one is the contents only and the other is for any Python code to make an CLI app.
+
+Finally, I can make the above code much more simple,
+
+```
+#!/usr/bin/env python3
+from logging import getLogger
+from pathlib import Path
+
+
+_LOG = getLogger(__name__)
+
+
+def add_arguments(parser):
+    parser.add_argument(
+            'in_file', type=Path,
+            help='An input file.')
+    parser.add_argument(
+            '--out-dir', '-d', type=Path, default=None,
+            help='A directory.')
+
+
+def main(args):
+    _LOG.debug('debug')
+    _LOG.info('info')
+    _LOG.warning('warning')
+    _LOG.error('error')
+    _LOG.critical('critical')
+    ...
+```
+
+It's similar to [python-fire](https://github.com/google/python-fire).
+
+But when I used the fire, I have to insert `from fire import Fire` and `Fire(your_func)`. I'd like to remove even such a few code.
+
+Then I'm completly free from noisy modules / code !
