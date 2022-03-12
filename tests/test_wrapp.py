@@ -16,10 +16,13 @@ def add_arguments(parser):
 
 
 def main(args):
-    ...'''
+    ...
+'''
 
 
 def test_new(capsys):
     wrapp.new()
     captured = capsys.readouterr()
-    assert captured == _EXPECT_STDOUT_NEW
+    assert len(captured.out) == len(_EXPECT_STDOUT_NEW)
+    for actual, expected in zip(captured.out, _EXPECT_STDOUT_NEW):
+        assert actual == expected

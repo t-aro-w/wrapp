@@ -93,8 +93,7 @@ def add_arguments(parser):
 
 
 def main(args):
-    ...
-'''
+    ...'''
 
 
 def new():
