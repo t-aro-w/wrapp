@@ -58,9 +58,14 @@ def main(args):
     ...
 ```
 
-Starting with this template, add program options in `add_arguments()`.
-
+Starting with this template, add program options in `add_arguments(parser)`.  
 The type of `parser` is assumed as `argparse.ArgumentParser` class.
+
+And `main(args)` function is the entry point.
+When you run `wrapp YOURS.py`, the program arguments are parsed as defined in `add_arguments(parser)` and stored the variable named `args`.
+Then all program arguments and options are output via `logger`.
+Finally, the `main(args)` is called.
+
 
 For details, your Python script must contain `add_arguments(parser)` and `main(args)`.
 `logger` is optional. Also `logger` can be replaced its name as `_LOG` or `LOG`.
