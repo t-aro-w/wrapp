@@ -42,7 +42,7 @@ you can get a template Python file named `YOURS.py`.
 `wrapp.new` outputs template code at stdout.
 
 ```
-cat YOURS.py
+$ cat YOURS.py
 #!/usr/bin/env python3
 from logging import getLogger
 
@@ -113,7 +113,7 @@ As I wrote tons of Python CLI applications, I noticed that,
 
 - `argparse` is the best practice to add my program command options.
 - `logging` is not bad if I modify something (format, ...).
-- But I noticed that there are many similar lines in my applications. And they make my code look more dirty.
+- But I noticed that there are many similar lines in my applications. And they make my code more dirty.
 
 Here is my application code pattern. Please note that there is nothing infomative.
 
@@ -128,10 +128,6 @@ import logging.config
 _LOG = getLogger(__name__)
 
 
-###############################################################################
-# public functions
-
-
 def add_arguments(parser):
     parser.add_argument(
             'in_file', type=Path,
@@ -139,14 +135,6 @@ def add_arguments(parser):
     parser.add_argument(
             '--out-dir', '-d', type=Path, default=None,
             help='A directory.')
-
-
-###############################################################################
-# private functions
-
-
-###############################################################################
-# Application
 
 
 def _main(args):
@@ -182,7 +170,7 @@ if __name__ == '__main__':
     _main(args)
 ```
 
-So I decided to separate it to 2 files; one is the contents only and the other is for any Python code to make an CLI app.
+So I decided to separate it to 2 files; one is the contents only and the other is a wrappter to make any Python files an CLI app.
 
 Finally, I can make the above code much more simple,
 
