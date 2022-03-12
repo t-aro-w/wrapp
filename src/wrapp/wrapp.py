@@ -28,7 +28,7 @@ def _import_module():
     return module
 
 
-def _set_loggers(module, level):
+def _set_loggers(module):
     _set_logger(LOG, LOG_LEVEL)
     module_logger = _get_module_logger(module)
     if module_logger is not None:
