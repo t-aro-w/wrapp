@@ -11,17 +11,19 @@ pip install wrapp
 
 ### TL;DR
 
-Create your Python script under a few rules. To do so, start with `wrapp.new`.
+1. Create your Python script under a few rules. To do so, start with `wrapp.new`.
 
-```
-wrapp.new > YOURS.py
-```
+    ```
+    wrapp.new > YOURS.py
+    ```
 
-Run your Python script as an CLI app.
+2. Edit `YOURS.py` as you like.
 
-```
-wrapp YOURS.py --your-options ...
-```
+3. Run your Python script as an CLI app.
+
+    ```
+    wrapp YOURS.py
+    ```
 
 That's it. Let's enjoy !
 
@@ -84,7 +86,16 @@ Then you can keep your script simple:
 
 - No dependencies. wrapp only depends on Python standard libraries.
 - One file. If you don't link install other packages at all, just copy `src/wrapp/wrapp.py`.
+
+    ```
+    $ cp PATH/TO/wrapp_repo/src/wrapp/wrapp.py ./wrapp
+    $ chmod u+x wrapp
+    $ ./wrapp.new > YOURS.py
+    $ ./wrapp YOURS.py
+    ```
+
 - It's like [python-fire](https://github.com/google/python-fire). But for wrapp, you don't need to import any other module in your Python code.
+- It's trivial but you also run `wrapp YOURS`.
 
 
 ## LICENSE
