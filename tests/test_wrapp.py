@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+import sys
+sys.path.insert(0, 'src/wrapp')
 import wrapp
-from pytest import capsys
 
 
 _EXPECT_STDOUT_NEW = '''#!/usr/bin/env python3
@@ -18,7 +19,7 @@ def main(args):
     ...'''
 
 
-def test_new():
+def test_new(capsys):
     wrapp.new()
     captured = capsys.readouterr()
     assert captured == _EXPECT_STDOUT_NEW
