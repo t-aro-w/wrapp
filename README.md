@@ -19,7 +19,7 @@ pip install wrapp
 
 2. Edit `YOURS.py` as you like.
 
-3. Run your Python script as an CLI app.
+3. Then you can run your Python script as an CLI app.
 
     ```
     wrapp YOURS.py
@@ -62,12 +62,11 @@ Starting with this template, add program options in `add_arguments(parser)`.
 The type of `parser` is assumed as `argparse.ArgumentParser` class.
 
 And `main(args)` function is the entry point.
-When you run `wrapp YOURS.py`, the program arguments are parsed as defined in `add_arguments(parser)` and stored the variable named `args`.
+When you run `wrapp YOURS.py`, the program arguments are parsed as defined in `add_arguments(parser)` and stored in the variable named `args`.
 Then all program arguments and options are output via `logger`.
 Finally, the `main(args)` is called.
 
-
-For details, your Python script must contain `add_arguments(parser)` and `main(args)`.
+As shown above, wrapp assumes your Python file contains `add_arguments(parser)` and `main(args)`.
 `logger` is optional. Also `logger` can be replaced its name as `_LOG` or `LOG`.
 For `logger`, it's OK to use any other 3rd-party logging modules like [`loguru`](https://github.com/Delgan/loguru).
 
