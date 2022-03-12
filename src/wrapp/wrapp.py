@@ -36,7 +36,9 @@ def _set_loggers(module, level):
 
 
 def _parse_arguments(module):
-    parser = ArgumentParser(prog=sys.argv[1], formatter_class=ArgumentDefaultsHelpFormatter)
+    parser = ArgumentParser(
+            prog=sys.argv[1],
+            formatter_class=ArgumentDefaultsHelpFormatter)
     module.add_arguments(parser)
     args = parser.parse_args(sys.argv[2:])
     _print_args(args)
@@ -47,12 +49,15 @@ def _get_module_logger(module):
     for c in LOGGER_NAME_CANDIDATES:
         if hasattr(module, c):
             return getattr(module, c)
-    LOG.warning(f'{module.__name__} does not have any of {LOGGER_NAME_CANDIDATES}')
+    LOG.warning(
+            f'{module.__name__} does not have any of {LOGGER_NAME_CANDIDATES}')
 
 
 def _set_logger(logger, level):
     if not isinstance(logger, Logger):
-        LOG.warning(f'type of logger = {type(logger)} is not logging.Logger. do nothing.')
+        LOG.warning((
+            f'type of logger = {type(logger)} is not logging.Logger.'
+            ' do nothing.'))
         return
     __handler = StreamHandler()
     __handler.setLevel(level)
@@ -75,6 +80,7 @@ def main():
     args = _parse_arguments(module)
     module.main(args)
 
+
 _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
 
@@ -90,8 +96,9 @@ def main(args):
     ...
 '''
 
+
 def new():
-    print(_TEMPLATE) 
+    print(_TEMPLATE)
 
 
 if __name__ == '__main__':
