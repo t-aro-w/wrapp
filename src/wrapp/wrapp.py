@@ -76,7 +76,7 @@ def _print_args(args):
 
 def main():
     module = _import_module()
-    _set_loggers(module, logging.INFO)
+    _set_loggers(module)
     args = _parse_arguments(module)
     module.main(args)
 
