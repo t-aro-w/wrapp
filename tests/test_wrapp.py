@@ -12,6 +12,7 @@ logger = getLogger(__name__)
 
 
 def add_arguments(parser):
+    group = parser.add_argument_group(__name__)
     ...
 
 
