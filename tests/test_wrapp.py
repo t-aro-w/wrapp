@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from unittest.mock import patch
+import pytest
 import sys
 sys.path.insert(0, 'src/wrapp')
 import wrapp
@@ -26,4 +28,29 @@ def test_new(capsys):
     captured = capsys.readouterr()
     assert len(captured.out) == len(_EXPECT_STDOUT_NEW)
     for actual, expected in zip(captured.out, _EXPECT_STDOUT_NEW):
+        assert actual == expected
+
+
+_EXPECT_STDOUT_MAIN_H = '''usage: template.py [-h] [--out-dir OUT_DIR] [--option] in_file
+
+optional arguments:
+  -h, --help            show this help message and exit
+
+template:
+  in_file               An input file.
+  --out-dir OUT_DIR, -d OUT_DIR
+                        A directory. (default: None)
+
+sub.template2:
+  --option              An option. (default: False)
+'''
+
+@patch('sys.argv', ['wrapp', 'template.py', '-h'])
+def test_main(capsys):
+    with pytest.raises(SystemExit) as e:
+        wrapp.main()
+    assert e.value.code == 0
+    captured = capsys.readouterr()
+    assert len(captured.out) == len(_EXPECT_STDOUT_MAIN_H)
+    for actual, expected in zip(captured.out, _EXPECT_STDOUT_MAIN_H):
         assert actual == expected
