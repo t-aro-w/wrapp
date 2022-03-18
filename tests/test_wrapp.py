@@ -43,7 +43,7 @@ template:
 
 sub.template2:
   --option              An option. (default: False)
-'''
+'''.splitlines()
 
 @patch('sys.argv', ['wrapp', 'template.py', '-h'])
 def test_main(capsys):
@@ -51,6 +51,7 @@ def test_main(capsys):
         wrapp.main()
     assert e.value.code == 0
     captured = capsys.readouterr()
-    for i, (actual, expected) in enumerate(zip(captured.out, _EXPECT_STDOUT_MAIN_H)):
+    actual_lines = captured.out.splitlines()
+    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_STDOUT_MAIN_H)):
         assert actual == expected, i
-    assert len(captured.out) == len(_EXPECT_STDOUT_MAIN_H)
+    assert len(actual_lines) == len(_EXPECT_STDOUT_MAIN_H)
