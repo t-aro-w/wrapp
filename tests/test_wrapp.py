@@ -51,6 +51,6 @@ def test_main(capsys):
         wrapp.main()
     assert e.value.code == 0
     captured = capsys.readouterr()
+    for i, (actual, expected) in enumerate(zip(captured.out, _EXPECT_STDOUT_MAIN_H)):
+        assert actual == expected, i
     assert len(captured.out) == len(_EXPECT_STDOUT_MAIN_H)
-    for actual, expected in zip(captured.out, _EXPECT_STDOUT_MAIN_H):
-        assert actual == expected
