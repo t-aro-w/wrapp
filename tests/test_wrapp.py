@@ -45,6 +45,22 @@ sub.template2:
   --option              An option. (default: False)
 '''.splitlines()
 
+
+_EXPECT_STDOUT_MAIN_H_PY3_10 = '''usage: template.py [-h] [--out-dir OUT_DIR] [--option] in_file
+
+options:
+  -h, --help            show this help message and exit
+
+template:
+  in_file               An input file.
+  --out-dir OUT_DIR, -d OUT_DIR
+                        A directory. (default: None)
+
+sub.template2:
+  --option              An option. (default: False)
+'''.splitlines()
+
+
 @patch('sys.argv', ['wrapp', 'template.py', '-h'])
 def test_main(capsys):
     with pytest.raises(SystemExit) as e:
@@ -52,6 +68,7 @@ def test_main(capsys):
     assert e.value.code == 0
     captured = capsys.readouterr()
     actual_lines = captured.out.splitlines()
-    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_STDOUT_MAIN_H)):
+    expect_lines = _EXPECT_STDOUT_MAIN_H_PY3_10 if sys.version_info.minor >= 10 else _EXPECT_STDOUT_MAIN_H
+    for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
         assert actual == expected, i
-    assert len(actual_lines) == len(_EXPECT_STDOUT_MAIN_H)
+    assert len(actual_lines) == len(expect_lines)
