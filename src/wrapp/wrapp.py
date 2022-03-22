@@ -19,7 +19,10 @@ def _import_module():
     sys.path.insert(0, os.getcwd())
     assert len(sys.argv) > 1, sys.argv
     args = sys.argv[1:]
-    module_name = Path(args[0]).stem
+    argv0_path = Path(args[0])
+    if len(argv0_path.parts) > 1:
+        sys.path.append(str(argv0_path.parent))
+    module_name = Path(argv0_path.name).stem
     module = import_module(module_name)
     assert hasattr(module, 'main'), (
             f'{module_name} does not have main()')
