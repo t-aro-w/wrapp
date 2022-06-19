@@ -86,10 +86,21 @@ Then you can keep your script simple:
 - Also you don't need any noisy modules such as `argparse`, `from argparse import ...`, `from logging import ...`.
 
 
+### Debugging
+
+When you want to debug your script, run the code like this.
+
+```
+python3 -m pdb -m wrapp YOURS.py --your-options ...
+```
+
+Then the debugging mode (`pdb`) will be started.
+
+
 ## FEATURES
 
 - No dependencies. wrapp only depends on Python standard libraries.
-- One file. If you don't link install other packages at all, just copy `src/wrapp/wrapp.py`.
+- One file. If you don't need to install other packages at all, just copy `src/wrapp/wrapp.py`.
 
     ```
     $ cp PATH/TO/wrapp_repo/src/wrapp/wrapp.py ./wrapp
@@ -99,7 +110,7 @@ Then you can keep your script simple:
     ```
 
 - It's like [python-fire](https://github.com/google/python-fire). But for wrapp, you don't need to import any other module in your Python code.
-- It's trivial but you also run `wrapp YOURS`.
+- It's trivial but you also run your script without the extension; `wrapp YOURS`.
 
 
 ## LICENSE
