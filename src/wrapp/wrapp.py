@@ -5,6 +5,7 @@ from pathlib import Path
 from importlib import import_module
 import logging
 import os
+import pdb
 import sys
 
 
@@ -38,7 +39,7 @@ def _set_loggers(module):
         _set_logger(module_logger, LOG_LEVEL)
 
 
-def _parse_arguments(module):
+def _parse_module_arguments(module):
     parser = ArgumentParser(
             prog=sys.argv[1],
             formatter_class=ArgumentDefaultsHelpFormatter)
@@ -80,7 +81,7 @@ def _print_args(args):
 def main():
     module = _import_module()
     _set_loggers(module)
-    args = _parse_arguments(module)
+    args = _parse_module_arguments(module)
     module.main(args)
 
 
