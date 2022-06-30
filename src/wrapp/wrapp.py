@@ -78,7 +78,7 @@ def _print_args(args):
         LOG.info(f'{k}= {v}')
 
 
-def main():
+def app():
     module = _import_module()
     _set_loggers(module)
     args = _parse_module_arguments(module)
@@ -106,4 +106,4 @@ def new():
 
 
 if __name__ == '__main__':
-    main()
+    app()

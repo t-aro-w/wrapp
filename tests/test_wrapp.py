@@ -64,7 +64,7 @@ sub.template2:
 @patch('sys.argv', ['wrapp', 'template.py', '-h'])
 def test_main(capsys):
     with pytest.raises(SystemExit) as e:
-        wrapp.main()
+        wrapp.app()
     assert e.value.code == 0
     captured = capsys.readouterr()
     actual_lines = captured.out.splitlines()
