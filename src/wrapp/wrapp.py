@@ -78,6 +78,15 @@ def _print_args(args):
         LOG.info(f'{k}= {v}')
 
 
+def _parse_args(add_arguments_func):
+    parser = ArgumentParser(
+            formatter_class=ArgumentDefaultsHelpFormatter)
+    add_arguments_func(parser)
+    args = parser.parse_args()
+    _print_args(args)
+    return args
+
+
 def app():
     module = _import_module()
     _set_loggers(module)
@@ -103,6 +112,12 @@ def main(args):
 
 def new():
     print(_TEMPLATE)
+
+
+def main(add_arguments_func, main_func, logger):
+    _set_logger(logger, LOG_LEVEL)
+    args = _parse_args(add_arguments_func)
+    main_func(args)
 
 
 if __name__ == '__main__':

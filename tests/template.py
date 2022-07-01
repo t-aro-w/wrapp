@@ -25,3 +25,8 @@ def main(args):
     LOG.error('error')
     LOG.critical('critical')
     ...
+
+
+if __name__ == '__main__':
+    import wrapp
+    wrapp.main(add_arguments, main, LOG)

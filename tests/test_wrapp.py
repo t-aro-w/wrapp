@@ -62,7 +62,7 @@ sub.template2:
 
 
 @patch('sys.argv', ['wrapp', 'template.py', '-h'])
-def test_main(capsys):
+def test_app(capsys):
     with pytest.raises(SystemExit) as e:
         wrapp.app()
     assert e.value.code == 0
@@ -72,3 +72,11 @@ def test_main(capsys):
     for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
         assert actual == expected, i
     assert len(actual_lines) == len(expect_lines)
+
+
+@patch('sys.argv', ['template.py', 'aaa', '--option'])
+def test_main():
+    import template
+    wrapp.main(template.add_arguments,
+            template.main,
+            template.LOG)
