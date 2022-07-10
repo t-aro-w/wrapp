@@ -2,7 +2,7 @@
 from unittest.mock import patch
 import pytest
 import sys
-sys.path.insert(0, 'src/wrapp')
+sys.path.insert(0, 'src')
 import wrapp
 
 
