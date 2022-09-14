@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wrapp"
-version = "0.4.1"
+version = "0.4.2"
 description = "Making a CLI Application by wrapping"
 authors = ["Taro W <19923207+t-aro-w@users.noreply.github.com>"]
 license = "MIT"
