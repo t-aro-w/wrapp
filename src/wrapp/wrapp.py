@@ -73,17 +73,16 @@ def _set_logger(logger, level):
     logger.propagate = False
 
 
-def _print_args(args):
+def _print_args(args, logger=LOG):
     for k, v in vars(args).items():
-        LOG.info(f'{k}= {v}')
+        logger.info(f'{k}= {v}')
 
 
-def _parse_args(add_arguments_func):
+def _parse_args(add_arguments_func, logger=LOG):
     parser = ArgumentParser(
             formatter_class=ArgumentDefaultsHelpFormatter)
     add_arguments_func(parser)
     args = parser.parse_args()
-    _print_args(args)
     return args
 
 
@@ -91,6 +90,7 @@ def app():
     module = _import_module()
     _set_loggers(module)
     args = _parse_module_arguments(module)
+    _print_args(args)
     module.main(args)
 
 
@@ -116,7 +116,8 @@ def new():
 
 def main(add_arguments_func, main_func, logger):
     _set_logger(logger, LOG_LEVEL)
-    args = _parse_args(add_arguments_func)
+    args = _parse_args(add_arguments_func, logger)
+    _print_args(args, logger)
     main_func(args)
 
 
