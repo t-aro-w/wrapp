@@ -56,6 +56,14 @@ def add_arguments(parser):
 
 def main(args):
     ...
+
+
+# code below is an option.
+# if you want to run it as an normal Python script
+# (`python THIS_SCRIPT.py`), uncomment it.
+# if __name__ == '__main__':
+#     import wrapp
+#     wrapp.main(add_arguments, main, logger)
 ```
 
 Starting with this template, add program options in `add_arguments(parser)`.  
@@ -84,6 +92,17 @@ Then you can keep your script simple:
 
 - `if __name__ == '__main__':` is not needed.
 - Also you don't need any noisy modules such as `argparse`, `from argparse import ...`, `from logging import ...`.
+
+
+### "I want to run it as `python my_script.py`"
+
+If you want to run your code as an usual Python way, just uncomment last 3 lines of the template.
+
+Then you can run like
+
+```
+python my_script.py --some-option ...
+```
 
 
 ### Debugging
