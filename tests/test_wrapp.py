@@ -20,7 +20,14 @@ def add_arguments(parser):
 
 def main(args):
     ...
-'''
+
+
+# code below is an option.
+# if you want to run it as an normal Python script
+# (`python THIS_SCRIPT.py`), uncomment it.
+# if __name__ == '__main__':
+#     import wrapp
+#     wrapp.main(add_arguments, main, logger)'''
 
 
 def test_new(capsys):
