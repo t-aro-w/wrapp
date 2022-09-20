@@ -69,7 +69,7 @@ sub.template2:
 
 
 @patch('sys.argv', ['wrapp', 'template.py', '-h'])
-def test_app(capsys):
+def test_app_help(capsys):
     with pytest.raises(SystemExit) as e:
         wrapp.app()
     assert e.value.code == 0
