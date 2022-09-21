@@ -92,9 +92,9 @@ def capture(command):
 
 
 _EXPECT_LINES = [
-        'wrapp.py:78 in_file= in_file',
-        'wrapp.py:78 out_dir= None',
-        'wrapp.py:78 option= True',
+        'wrapp.py:77 in_file= in_file',
+        'wrapp.py:77 out_dir= None',
+        'wrapp.py:77 option= True',
         'template.py:23 info',
         'template.py:24 warning',
         'template.py:25 error',
@@ -108,7 +108,7 @@ def test_app():
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
     for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
         assert actual == expected, i
-    assert len(actual_lines) == len(expect_lines)
+    assert len(actual_lines) == len(_EXPECT_LINES)
 
 
 def test_cli():
@@ -117,7 +117,7 @@ def test_cli():
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
     for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
         assert actual == expected, i
-    assert len(actual_lines) == len(expect_lines)
+    assert len(actual_lines) == len(_EXPECT_LINES)
 
 
 @patch('sys.argv', ['template.py', 'aaa', '--option'])

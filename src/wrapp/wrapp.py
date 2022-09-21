@@ -45,7 +45,6 @@ def _parse_module_arguments(module):
             formatter_class=ArgumentDefaultsHelpFormatter)
     module.add_arguments(parser)
     args = parser.parse_args(sys.argv[2:])
-    _print_args(args)
     return args
 
 
