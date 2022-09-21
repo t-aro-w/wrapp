@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from unittest.mock import patch
 import pytest
+import subprocess
 import sys
 sys.path.insert(0, 'src')
 import wrapp
@@ -77,6 +78,44 @@ def test_app_help(capsys):
     actual_lines = captured.out.splitlines()
     expect_lines = _EXPECT_STDOUT_MAIN_H_PY3_10 if sys.version_info.minor >= 10 else _EXPECT_STDOUT_MAIN_H
     for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
+        assert actual == expected, i
+    assert len(actual_lines) == len(expect_lines)
+
+
+def capture(command):
+    proc = subprocess.Popen(command,
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE,
+    )
+    out,err = proc.communicate()
+    return out, err, proc.returncode
+
+
+_EXPECT_LINES = [
+        'wrapp.py:78 in_file= in_file',
+        'wrapp.py:78 out_dir= None',
+        'wrapp.py:78 option= True',
+        'template.py:23 info',
+        'template.py:24 warning',
+        'template.py:25 error',
+        'template.py:26 critical'
+        ]
+
+
+def test_app():
+    command = 'python', 'tests/template.py', '--option', 'in_file'
+    out, err, returncode = capture(command)
+    actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
+    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
+        assert actual == expected, i
+    assert len(actual_lines) == len(expect_lines)
+
+
+def test_cli():
+    command = 'wrapp', 'tests/template.py', '--option', 'in_file'
+    out, err, returncode = capture(command)
+    actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
+    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
         assert actual == expected, i
     assert len(actual_lines) == len(expect_lines)
 
