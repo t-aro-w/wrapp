@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from unittest.mock import patch
+import os
 import pytest
 import subprocess
 import sys
@@ -83,41 +84,51 @@ def test_app_help(capsys):
 
 
 def capture(command):
+    env = os.environ.copy()
+    env['PYTHONPATH']= 'src'
     proc = subprocess.Popen(command,
-        stdout = subprocess.PIPE,
-        stderr = subprocess.PIPE,
+        stdout= subprocess.PIPE,
+        stderr= subprocess.PIPE,
+        env= env,
     )
     out,err = proc.communicate()
     return out, err, proc.returncode
 
 
-_EXPECT_LINES = [
-        'wrapp.py:77 in_file= in_file',
-        'wrapp.py:77 out_dir= None',
-        'wrapp.py:77 option= True',
-        'template.py:23 info',
-        'template.py:24 warning',
-        'template.py:25 error',
-        'template.py:26 critical'
-        ]
-
-
 def test_app():
     command = 'python', 'tests/template.py', '--option', 'in_file'
+    expect_lines = [
+            'wrapp.py:77 in_file= in_file',
+            'wrapp.py:77 out_dir= None',
+            'wrapp.py:77 option= True',
+            'template.py:23 info',
+            'template.py:24 warning',
+            'template.py:25 error',
+            'template.py:26 critical'
+            ]
     out, err, returncode = capture(command)
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
-    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
-        assert actual == expected, i
-    assert len(actual_lines) == len(_EXPECT_LINES)
+    for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
+        assert actual == expected, actual_lines
+    assert len(actual_lines) == len(expect_lines)
 
 
 def test_cli():
-    command = 'wrapp', 'tests/template.py', '--option', 'in_file'
+    command = 'python', '-m', 'wrapp', 'tests/template.py', '--option', 'in_file'
+    expect_lines = [
+            '__main__.py:77 in_file= in_file',
+            '__main__.py:77 out_dir= None',
+            '__main__.py:77 option= True',
+            'template.py:23 info',
+            'template.py:24 warning',
+            'template.py:25 error',
+            'template.py:26 critical'
+            ]
     out, err, returncode = capture(command)
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
-    for i, (actual, expected) in enumerate(zip(actual_lines, _EXPECT_LINES)):
+    for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
         assert actual == expected, i
-    assert len(actual_lines) == len(_EXPECT_LINES)
+    assert len(actual_lines) == len(expect_lines)
 
 
 @patch('sys.argv', ['template.py', 'aaa', '--option'])
