@@ -5,6 +5,11 @@ from pathlib import Path
 LOG = getLogger(__name__)
 
 
+def set_logger(parent_name):
+    global LOG
+    LOG = getLogger(f'{parent_name}.{__name__}')
+
+
 def add_arguments(parser):
     group = parser.add_argument_group(__name__)
     group.add_argument(
@@ -18,4 +23,3 @@ def main(args):
     LOG.warning('warning')
     LOG.error('error')
     LOG.critical('critical')
-    ...

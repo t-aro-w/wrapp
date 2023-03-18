@@ -12,7 +12,12 @@ _EXPECT_STDOUT_NEW = '''#!/usr/bin/env python3
 from logging import getLogger
 
 
-_LOG = getLogger(__name__)
+LOG = getLogger(__name__)
+
+
+def set_logger(parent_name):
+    global LOG
+    LOG = getLogger(f'{parent_name}.{__name__}')
 
 
 def add_arguments(parser):
@@ -29,7 +34,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, _LOG)'''
+#     wrapp.main(add_arguments, main, set_logger)'''
 
 
 def test_new(capsys):
@@ -98,13 +103,17 @@ def capture(command):
 def test_app():
     command = 'python', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            'wrapp.py:99 in_file= in_file',
-            'wrapp.py:99 out_dir= None',
-            'wrapp.py:99 option= True',
-            'template.py:23 info',
-            'template.py:24 warning',
-            'template.py:25 error',
-            'template.py:26 critical'
+            'wrapp.py:96 in_file= in_file',
+            'wrapp.py:96 out_dir= None',
+            'wrapp.py:96 option= True',
+            'template.py:30 info',
+            'template.py:31 warning',
+            'template.py:32 error',
+            'template.py:33 critical',
+            'template2.py:22 info',
+            'template2.py:23 warning',
+            'template2.py:24 error',
+            'template2.py:25 critical'
             ]
     out, err, returncode = capture(command)
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
@@ -116,13 +125,17 @@ def test_app():
 def test_cli():
     command = 'python', '-m', 'wrapp', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            '__main__.py:99 in_file= in_file',
-            '__main__.py:99 out_dir= None',
-            '__main__.py:99 option= True',
-            'template.py:23 info',
-            'template.py:24 warning',
-            'template.py:25 error',
-            'template.py:26 critical'
+            '__main__.py:96 in_file= in_file',
+            '__main__.py:96 out_dir= None',
+            '__main__.py:96 option= True',
+            'template.py:30 info',
+            'template.py:31 warning',
+            'template.py:32 error',
+            'template.py:33 critical',
+            'template2.py:22 info',
+            'template2.py:23 warning',
+            'template2.py:24 error',
+            'template2.py:25 critical'
             ]
     out, err, returncode = capture(command)
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
@@ -136,4 +149,4 @@ def test_main():
     import template
     wrapp.main(template.add_arguments,
             template.main,
-            template.LOG)
+            template.set_logger)

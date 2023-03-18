@@ -18,7 +18,12 @@ _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
 
 
-_LOG = getLogger(__name__)
+LOG = getLogger(__name__)
+
+
+def set_logger(parent_name):
+    global LOG
+    LOG = getLogger(f'{parent_name}.{__name__}')
 
 
 def add_arguments(parser):
@@ -35,7 +40,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, _LOG)'''
+#     wrapp.main(add_arguments, main, set_logger)'''
 
 
 def _import_module():
@@ -52,13 +57,6 @@ def _import_module():
     assert hasattr(module, 'add_arguments'), (
             f'{module_name} does not have add_arguments()')
     return module
-
-
-def _set_loggers(module):
-    _set_logger(LOG, LOG_LEVEL)
-    module_logger = _get_module_logger(module)
-    if module_logger is not None:
-        _set_logger(module_logger, LOG_LEVEL)
 
 
 def _parse_module_arguments(module):
@@ -91,15 +89,14 @@ def _set_logger(logger, level):
     ))
     logger.setLevel(level)
     logger.addHandler(__handler)
-    logger.propagate = False
 
 
-def _print_args(args, logger=LOG):
+def _print_args(args):
     for k, v in vars(args).items():
-        logger.info(f'{k}= {v}')
+        LOG.info(f'{k}= {v}')
 
 
-def _parse_args(add_arguments_func, logger=LOG):
+def _parse_args(add_arguments_func):
     parser = ArgumentParser(
             formatter_class=ArgumentDefaultsHelpFormatter)
     add_arguments_func(parser)
@@ -112,7 +109,9 @@ def app():
     comes here when wrapp YOUR_SCRIPT ... is run.
     '''
     module = _import_module()
-    _set_loggers(module)
+    _set_logger(LOG, LOG_LEVEL)
+    if hasattr(module, 'set_logger'):
+        module.set_logger(LOG.name)
     args = _parse_module_arguments(module)
     _print_args(args)
     module.main(args)
@@ -125,13 +124,14 @@ def new():
     print(_TEMPLATE, end='')
 
 
-def main(add_arguments_func, main_func, logger):
+def main(add_arguments_func, main_func, set_logger_func):
     '''
     use this function when you want to use usual if __name__ == '__main__': block.
     '''
-    _set_logger(logger, LOG_LEVEL)
-    args = _parse_args(add_arguments_func, logger)
-    _print_args(args, logger)
+    set_logger_func(LOG.name)
+    _set_logger(LOG, LOG_LEVEL)
+    args = _parse_args(add_arguments_func)
+    _print_args(args)
     main_func(args)
 
 
