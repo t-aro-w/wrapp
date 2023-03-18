@@ -47,10 +47,16 @@ $ cat YOURS.py
 from logging import getLogger
 
 
-_LOG = getLogger(__name__)
+LOG = getLogger(__name__)
+
+
+def set_logger(parent_name):
+    global LOG
+    LOG = getLogger(f'{parent_name}.{__name__}')
 
 
 def add_arguments(parser):
+    group = parser.add_argument_group(__name__)
     ...
 
 
@@ -63,7 +69,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, _LOG)
+#     wrapp.main(add_arguments, main, set_logger)
 ```
 
 Starting with this template, add program options in `add_arguments(parser)`.  
