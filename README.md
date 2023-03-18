@@ -47,7 +47,7 @@ $ cat YOURS.py
 from logging import getLogger
 
 
-logger = getLogger(__name__)
+_LOG = getLogger(__name__)
 
 
 def add_arguments(parser):
@@ -63,7 +63,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, logger)
+#     wrapp.main(add_arguments, main, _LOG)
 ```
 
 Starting with this template, add program options in `add_arguments(parser)`.  
