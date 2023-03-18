@@ -12,7 +12,7 @@ LOG = getLogger(__name__)
 
 LOG_LEVEL = logging.INFO
 
-LOGGER_NAME_CANDIDATES = 'logger', '_LOG', 'LOG'
+LOGGER_NAME_CANDIDATES = 'logger', '_LOG', 'LOG', 'LOGGER', '_LOGGER', '_logger'
 
 
 def _import_module():
@@ -96,7 +96,7 @@ _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
 
 
-logger = getLogger(__name__)
+_LOG = getLogger(__name__)
 
 
 def add_arguments(parser):
@@ -113,7 +113,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, logger)'''
+#     wrapp.main(add_arguments, main, _LOG)'''
 
 
 def new():
