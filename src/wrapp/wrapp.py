@@ -108,6 +108,9 @@ def _parse_args(add_arguments_func, logger=LOG):
 
 
 def app():
+    '''
+    comes here when wrapp YOUR_SCRIPT ... is run.
+    '''
     module = _import_module()
     _set_loggers(module)
     args = _parse_module_arguments(module)
@@ -116,10 +119,16 @@ def app():
 
 
 def new():
+    '''
+    comes here when wrapp.new is run.
+    '''
     print(_TEMPLATE, end='')
 
 
 def main(add_arguments_func, main_func, logger):
+    '''
+    use this function when you want to use usual if __name__ == '__main__': block.
+    '''
     _set_logger(logger, LOG_LEVEL)
     args = _parse_args(add_arguments_func, logger)
     _print_args(args, logger)
