@@ -14,6 +14,29 @@ LOG_LEVEL = logging.INFO
 
 LOGGER_NAME_CANDIDATES = 'logger', '_LOG', 'LOG', 'LOGGER', '_LOGGER', '_logger'
 
+_TEMPLATE = '''#!/usr/bin/env python3
+from logging import getLogger
+
+
+_LOG = getLogger(__name__)
+
+
+def add_arguments(parser):
+    group = parser.add_argument_group(__name__)
+    ...
+
+
+def main(args):
+    ...
+
+
+# code below is an option.
+# if you want to run it as an normal Python script
+# (`python THIS_SCRIPT.py`), uncomment it.
+# if __name__ == '__main__':
+#     import wrapp
+#     wrapp.main(add_arguments, main, _LOG)'''
+
 
 def _import_module():
     sys.path.insert(0, Path().cwd())
@@ -90,30 +113,6 @@ def app():
     args = _parse_module_arguments(module)
     _print_args(args)
     module.main(args)
-
-
-_TEMPLATE = '''#!/usr/bin/env python3
-from logging import getLogger
-
-
-_LOG = getLogger(__name__)
-
-
-def add_arguments(parser):
-    group = parser.add_argument_group(__name__)
-    ...
-
-
-def main(args):
-    ...
-
-
-# code below is an option.
-# if you want to run it as an normal Python script
-# (`python THIS_SCRIPT.py`), uncomment it.
-# if __name__ == '__main__':
-#     import wrapp
-#     wrapp.main(add_arguments, main, _LOG)'''
 
 
 def new():
