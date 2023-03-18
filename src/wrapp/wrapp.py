@@ -4,7 +4,6 @@ from logging import getLogger, Logger, StreamHandler, Formatter
 from pathlib import Path
 from importlib import import_module
 import logging
-import os
 import pdb
 import sys
 
@@ -17,7 +16,7 @@ LOGGER_NAME_CANDIDATES = 'logger', '_LOG', 'LOG'
 
 
 def _import_module():
-    sys.path.insert(0, os.getcwd())
+    sys.path.insert(0, Path().cwd())
     assert len(sys.argv) > 1, sys.argv
     args = sys.argv[1:]
     argv0_path = Path(args[0])
