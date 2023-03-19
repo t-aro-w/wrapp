@@ -1,5 +1,7 @@
 # wrapp: Making a CLI Application by wrapping
 
+wrapp helps you to make a CLI application without boilerplate of logging & argparse.
+
 
 ## INSTALL
 
@@ -72,17 +74,56 @@ def main(args):
 #     wrapp.main(add_arguments, main, set_logger)
 ```
 
-Starting with this template, add program options in `add_arguments(parser)`.  
-The type of `parser` is assumed as `argparse.ArgumentParser` class.
+This template has 1 global variable and 3 functions; `LOG`, `set_logger()`,
+`add_arguments()`, `main()`.
 
-And `main(args)` function is the entry point.
-When you run `wrapp YOURS.py`, the program arguments are parsed as defined in `add_arguments(parser)` and stored in the variable named `args`.
-Then all program arguments and options are output via `logger`.
-Finally, the `main(args)` is called.
+`LOG` is the logger in this file. It may be changed in `set_logger()`.
+
+`set_logger()` is assumed to be called by wrapp.
+Python logging module has an implicit rule that when a logger name is delimited
+by `.`, corresponding loggers form parent-child relationship.
+e.g. `wrapp.module` named logger is child of the logger named `wrapp`. And
+when you configure the `wrapp` logger, `wrapp.module` logger is also configured
+as same as the `wrapp` logger.
+
+If your script import some other your modules and you want to configure these
+modules' loggers as the same settings as this, you can call recursively
+`set_logger()`.
+
+```
+import your_module2
+
+def set_logger(parent_name):
+    global LOG
+    LOG = getLogger(f'{parent_name}.{__name__}')
+    your_module2.set_logger(parent_name)
+```
+
+See also `tests/template.py` and `tests/sub/template2.py`.
+
+`add_arguments()` is the function to set program arguments.
+`add_arguments()` takes 1 argument; `parser` which is assumed as
+an instance of `argparse.ArgumentParser`.
+However, I don't use a type hint now because of redusing `import` statements.
+
+`add_arguments()` is also available recusive calling.
+See also `tests/template.py` and `tests/sub/template2.py`.
+
+`main()` function is the entry point.
+
+When you run `wrapp YOURS.py`,
+
+1. [Optional] `wrapp` call `set_logger()` and also set its logger.
+
+2. The program arguments are parsed as defined in `add_arguments()` and
+stored in the variable named `args`.
+
+3. All program arguments and options are output to console.
+
+4. Finally, the `main(args)` is called.
 
 As shown above, wrapp assumes your Python file contains `add_arguments(parser)` and `main(args)`.
-`logger` is optional. Also `logger` can be replaced its name as `_LOG` or `LOG`.
-For `logger`, it's OK to use any other 3rd-party logging modules like [`loguru`](https://github.com/Delgan/loguru).
+`set_logger()` is optional.
 
 
 ### Run your Python script as an CLI app
