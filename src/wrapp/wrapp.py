@@ -12,8 +12,6 @@ LOG = getLogger(__name__)
 
 LOG_LEVEL = logging.INFO
 
-LOGGER_NAME_CANDIDATES = 'logger', '_LOG', 'LOG', 'LOGGER', '_LOGGER', '_logger'
-
 _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
 
@@ -66,14 +64,6 @@ def _parse_module_arguments(module):
     module.add_arguments(parser)
     args = parser.parse_args(sys.argv[2:])
     return args
-
-
-def _get_module_logger(module):
-    for c in LOGGER_NAME_CANDIDATES:
-        if hasattr(module, c):
-            return getattr(module, c)
-    LOG.warning(
-            f'{module.__name__} does not have any of {LOGGER_NAME_CANDIDATES}')
 
 
 def _set_logger(logger, level):
