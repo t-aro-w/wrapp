@@ -41,6 +41,12 @@ def main(args):
 
 
 def _import_module():
+    if sys.argv[1] in ('-h', '--help'):
+        argv0 = Path(sys.argv[0]).name
+        ArgumentParser(
+                usage=f'{argv0} MODULE_OR_SCRIPT ..',
+                ).print_help()
+        exit()
     sys.path.insert(0, Path().cwd())
     assert len(sys.argv) > 1, sys.argv
     args = sys.argv[1:]

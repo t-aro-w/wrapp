@@ -103,9 +103,9 @@ def capture(command):
 def test_app():
     command = 'python', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            'wrapp.py:85 in_file= in_file',
-            'wrapp.py:85 out_dir= None',
-            'wrapp.py:85 option= True',
+            'wrapp.py:91 in_file= in_file',
+            'wrapp.py:91 out_dir= None',
+            'wrapp.py:91 option= True',
             'template.py:30 info',
             'template.py:31 warning',
             'template.py:32 error',
@@ -125,9 +125,9 @@ def test_app():
 def test_cli():
     command = 'python', '-m', 'wrapp', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            '__main__.py:85 in_file= in_file',
-            '__main__.py:85 out_dir= None',
-            '__main__.py:85 option= True',
+            '__main__.py:91 in_file= in_file',
+            '__main__.py:91 out_dir= None',
+            '__main__.py:91 option= True',
             'template.py:30 info',
             'template.py:31 warning',
             'template.py:32 error',
@@ -139,6 +139,21 @@ def test_cli():
             ]
     out, err, returncode = capture(command)
     actual_lines = [' '.join(i.decode().split()[3:]) for i in err.splitlines()]
+    for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
+        assert actual == expected, i
+    assert len(actual_lines) == len(expect_lines)
+
+
+def test_wrapp_help():
+    command = 'python', '-m', 'wrapp', '-h'
+    expect_lines = [
+            'usage: __main__.py MODULE_OR_SCRIPT ..',
+            '',
+            'optional arguments:',
+            '  -h, --help  show this help message and exit'
+            ]
+    out, err, returncode = capture(command)
+    actual_lines = [i.decode() for i in out.splitlines()]
     for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
         assert actual == expected, i
     assert len(actual_lines) == len(expect_lines)
