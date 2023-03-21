@@ -149,7 +149,7 @@ def test_wrapp_help():
     expect_lines = [
             'usage: __main__.py MODULE_OR_SCRIPT ..',
             '',
-            'optional arguments:',
+            'optional arguments:' if sys.version_info.minor <= 9 else 'options:',
             '  -h, --help  show this help message and exit'
             ]
     out, err, returncode = capture(command)
