@@ -103,9 +103,9 @@ def capture(command):
 def test_app():
     command = 'python', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            'wrapp.py:91 in_file= in_file',
-            'wrapp.py:91 out_dir= None',
-            'wrapp.py:91 option= True',
+            'wrapp.py:90 in_file= in_file',
+            'wrapp.py:90 out_dir= None',
+            'wrapp.py:90 option= True',
             'template.py:30 info',
             'template.py:31 warning',
             'template.py:32 error',
@@ -125,9 +125,9 @@ def test_app():
 def test_cli():
     command = 'python', '-m', 'wrapp', 'tests/template.py', '--option', 'in_file'
     expect_lines = [
-            '__main__.py:91 in_file= in_file',
-            '__main__.py:91 out_dir= None',
-            '__main__.py:91 option= True',
+            '__main__.py:90 in_file= in_file',
+            '__main__.py:90 out_dir= None',
+            '__main__.py:90 option= True',
             'template.py:30 info',
             'template.py:31 warning',
             'template.py:32 error',

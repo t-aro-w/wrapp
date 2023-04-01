@@ -47,8 +47,7 @@ def _import_module():
                 usage=f'{argv0} MODULE_OR_SCRIPT ..',
                 ).print_help()
         exit()
-    sys.path.insert(0, Path(sys.argv[0]).cwd())
-    sys.path.insert(0, Path(sys.argv[1]).cwd())
+    sys.path.insert(0, str(Path(sys.argv[0]).cwd()))
     args = sys.argv[1:]
     argv0_path = Path(args[0])
     if len(argv0_path.parts) > 1:
