@@ -159,6 +159,21 @@ def test_wrapp_help():
     assert len(actual_lines) == len(expect_lines)
 
 
+def test_wrapp_noargs():
+    command = 'python', '-m', 'wrapp'
+    expect_lines = [
+            'usage: __main__.py MODULE_OR_SCRIPT ..',
+            '',
+            'optional arguments:' if sys.version_info.minor <= 9 else 'options:',
+            '  -h, --help  show this help message and exit'
+            ]
+    out, err, returncode = capture(command)
+    actual_lines = [i.decode() for i in out.splitlines()]
+    for i, (actual, expected) in enumerate(zip(actual_lines, expect_lines)):
+        assert actual == expected, i
+    assert len(actual_lines) == len(expect_lines)
+
+
 @patch('sys.argv', ['template.py', 'aaa', '--option'])
 def test_main():
     import template

@@ -41,14 +41,14 @@ def main(args):
 
 
 def _import_module():
-    if sys.argv[1] in ('-h', '--help'):
+    if len(sys.argv) == 1 or sys.argv[1] in ('-h', '--help'):
         argv0 = Path(sys.argv[0]).name
         ArgumentParser(
                 usage=f'{argv0} MODULE_OR_SCRIPT ..',
                 ).print_help()
         exit()
-    sys.path.insert(0, Path().cwd())
-    assert len(sys.argv) > 1, sys.argv
+    sys.path.insert(0, Path(sys.argv[0]).cwd())
+    sys.path.insert(0, Path(sys.argv[1]).cwd())
     args = sys.argv[1:]
     argv0_path = Path(args[0])
     if len(argv0_path.parts) > 1:
