@@ -49,12 +49,7 @@ $ cat YOURS.py
 from logging import getLogger
 
 
-LOG = getLogger(__name__)
-
-
-def set_logger(parent_name):
-    global LOG
-    LOG = getLogger(f'{parent_name}.{__name__}')
+LOG = getLogger(f'__main__.{__name__}')
 
 
 def add_arguments(parser):
@@ -71,40 +66,19 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, set_logger)
+#     wrapp.main(add_arguments, main)
 ```
 
-This template has 1 global variable and 3 functions; `LOG`, `set_logger()`,
+This template has 1 global variable and 2 functions; `LOG`,
 `add_arguments()`, `main()`.
 
-`LOG` is the logger in this file. It may be changed in `set_logger()`.
-
-`set_logger()` is assumed to be called by wrapp.
-Python logging module has an implicit rule that when a logger name is delimited
-by `.`, corresponding loggers form parent-child relationship.
-e.g. `wrapp.module` named logger is child of the logger named `wrapp`. And
-when you configure the `wrapp` logger, `wrapp.module` logger is also configured
-as same as the `wrapp` logger.
-
-If your script import some other your modules and you want to configure these
-modules' loggers as the same settings as this, you can call recursively
-`set_logger()`.
-
-```
-import your_module2
-
-def set_logger(parent_name):
-    global LOG
-    LOG = getLogger(f'{parent_name}.{__name__}')
-    your_module2.set_logger(parent_name)
-```
-
-See also `tests/template.py` and `tests/sub/template2.py`.
+`LOG` is the logger in this file.
 
 `add_arguments()` is the function to set program arguments.
 `add_arguments()` takes 1 argument; `parser` which is assumed as
 an instance of `argparse.ArgumentParser`.
-However, I don't use a type hint now because of redusing `import` statements.
+However, I don't use a type hint now in the template
+because of redusing `import` statements.
 
 `add_arguments()` is also available recusive calling.
 See also `tests/template.py` and `tests/sub/template2.py`.
@@ -113,17 +87,14 @@ See also `tests/template.py` and `tests/sub/template2.py`.
 
 When you run `wrapp YOURS.py`,
 
-1. [Optional] `wrapp` call `set_logger()` and also set its logger.
-
-2. The program arguments are parsed as defined in `add_arguments()` and
+1. The program arguments are parsed as defined in `add_arguments()` and
 stored in the variable named `args`.
 
-3. All program arguments and options are output to console.
+2. All program arguments and options are output to console.
 
-4. Finally, the `main(args)` is called.
+3. Finally, the `main(args)` is called.
 
 As shown above, wrapp assumes your Python file contains `add_arguments(parser)` and `main(args)`.
-`set_logger()` is optional.
 
 
 ### Run your Python script as an CLI app
@@ -202,7 +173,7 @@ from pathlib import Path
 import logging.config
 
 
-_LOG = getLogger(__name__)
+LOG = getLogger(__name__)
 
 
 def add_arguments(parser):
@@ -215,11 +186,11 @@ def add_arguments(parser):
 
 
 def _main(args):
-    _LOG.debug('debug')
-    _LOG.info('info')
-    _LOG.warning('warning')
-    _LOG.error('error')
-    _LOG.critical('critical')
+    LOG.debug('debug')
+    LOG.info('info')
+    LOG.warning('warning')
+    LOG.error('error')
+    LOG.critical('critical')
     ...
 
 
@@ -229,13 +200,13 @@ def _parse_args():
     args = parser.parse_args()
     logging.config.fileConfig('logging.conf')
     for k,v in vars(args).items():
-        _LOG.info('{}= {}'.format(k, v))
+        LOG.info('{}= {}'.format(k, v))
     return args
 
 
 def _print_args(args):
     for k, v in vars(args).items():
-        _LOG.info(f'{k}= {v}')
+        LOG.info(f'{k}= {v}')
 
 
 if __name__ == '__main__':
@@ -257,7 +228,7 @@ from logging import getLogger
 from pathlib import Path
 
 
-_LOG = getLogger(__name__)
+LOG = getLogger(__name__)
 
 
 def add_arguments(parser):
@@ -270,11 +241,11 @@ def add_arguments(parser):
 
 
 def main(args):
-    _LOG.debug('debug')
-    _LOG.info('info')
-    _LOG.warning('warning')
-    _LOG.error('error')
-    _LOG.critical('critical')
+    LOG.debug('debug')
+    LOG.info('info')
+    LOG.warning('warning')
+    LOG.error('error')
+    LOG.critical('critical')
     ...
 ```
 
