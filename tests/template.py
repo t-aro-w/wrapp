@@ -4,14 +4,8 @@ from pathlib import Path
 
 from sub import template2
 
-LOG = getLogger(__name__)
 
-
-def set_logger(parent_name):
-    global LOG
-    name = f'{parent_name}.{__name__}'
-    LOG = getLogger(name)
-    template2.set_logger(LOG.name)
+LOG = getLogger(f'__main__.{__name__}')
 
 
 def add_arguments(parser):
@@ -36,4 +30,4 @@ def main(args):
 
 if __name__ == '__main__':
     import wrapp
-    wrapp.main(add_arguments, main, set_logger)
+    wrapp.main(add_arguments, main)

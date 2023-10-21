@@ -7,7 +7,7 @@ import logging
 import sys
 
 
-LOG = getLogger(__name__)
+LOG = getLogger('__main__')
 
 LOG_LEVEL = logging.INFO
 
@@ -15,12 +15,7 @@ _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
 
 
-LOG = getLogger(__name__)
-
-
-def set_logger(parent_name):
-    global LOG
-    LOG = getLogger(f'{parent_name}.{__name__}')
+LOG = getLogger(f'__main__.{__name__}')
 
 
 def add_arguments(parser):
@@ -37,7 +32,7 @@ def main(args):
 # (`python THIS_SCRIPT.py`), uncomment it.
 # if __name__ == '__main__':
 #     import wrapp
-#     wrapp.main(add_arguments, main, set_logger)'''
+#     wrapp.main(add_arguments, main)'''
 
 
 def _import_module():
@@ -104,8 +99,6 @@ def app():
     '''
     module = _import_module()
     _set_logger(LOG, LOG_LEVEL)
-    if hasattr(module, 'set_logger'):
-        module.set_logger(LOG.name)
     args = _parse_module_arguments(module)
     _print_args(args)
     module.main(args)
@@ -118,11 +111,10 @@ def new():
     print(_TEMPLATE, end='')
 
 
-def main(add_arguments_func, main_func, set_logger_func):
+def main(add_arguments_func, main_func):
     '''
     use this function when you want to use usual if __name__ == '__main__': block.
     '''
-    set_logger_func(LOG.name)
     _set_logger(LOG, LOG_LEVEL)
     args = _parse_args(add_arguments_func)
     _print_args(args)

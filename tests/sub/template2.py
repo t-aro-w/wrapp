@@ -2,12 +2,8 @@
 from logging import getLogger
 from pathlib import Path
 
-LOG = getLogger(__name__)
 
-
-def set_logger(parent_name):
-    global LOG
-    LOG = getLogger(f'{parent_name}.{__name__}')
+LOG = getLogger(f'__main__.{__name__}')
 
 
 def add_arguments(parser):
