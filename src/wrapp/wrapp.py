@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from logging import getLogger, Logger, StreamHandler, Formatter
+from os import getenv
 from pathlib import Path
 from importlib import import_module
 import logging
@@ -9,7 +10,7 @@ import sys
 
 LOG = getLogger('__main__')
 
-LOG_LEVEL = logging.INFO
+WRAPP_LOG_LEVEL = getenv('WRAPP_LOG_LEVEL', logging.INFO)
 
 _TEMPLATE = '''#!/usr/bin/env python3
 from logging import getLogger
@@ -98,7 +99,7 @@ def app():
     comes here when wrapp YOUR_SCRIPT ... is run.
     '''
     module = _import_module()
-    _set_logger(LOG, LOG_LEVEL)
+    _set_logger(LOG, WRAPP_LOG_LEVEL)
     args = _parse_module_arguments(module)
     _print_args(args)
     module.main(args)
@@ -115,7 +116,7 @@ def main(add_arguments_func, main_func):
     '''
     use this function when you want to use usual if __name__ == '__main__': block.
     '''
-    _set_logger(LOG, LOG_LEVEL)
+    _set_logger(LOG, WRAPP_LOG_LEVEL)
     args = _parse_args(add_arguments_func)
     _print_args(args)
     main_func(args)
